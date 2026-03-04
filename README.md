@@ -8,6 +8,9 @@ An OCI-compliant content delivery and enrichment service for [Gemara](https://gi
 - **Enrichment API** -- Transforms compliance assessment results using configurable plugin mappers (`POST /v1/enrich`)
 - **Content-addressable storage** -- Blobs stored on filesystem by SHA-256 digest, metadata indexed in embedded BBolt
 
+⚠️ **NOTE:**
+To disable JWT when you build the tool for local running, ensure `jwtAuth` is set to `false` in [docs/config.yaml](docs/config.yaml).
+
 ## Quick Start
 
 ### Build

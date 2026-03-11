@@ -61,11 +61,11 @@ func main() {
 	blobRoot := filepath.Join(output, "blobs")
 	dbPath := filepath.Join(output, "index.db")
 
-	cisCatalog, err := seedData.ReadFile("testdata/cis-fedora-l1-workstation-catalog.yaml")
+	cisCatalog, err := seedData.ReadFile("testdata/cis-fedora-l1-server-catalog.yaml")
 	if err != nil {
 		log.Fatalf("failed to load CIS Fedora catalog seed data: %v", err)
 	}
-	cisPolicy, err := seedData.ReadFile("testdata/cis-fedora-l1-workstation-policy.yaml")
+	cisPolicy, err := seedData.ReadFile("testdata/cis-fedora-l1-server-policy.yaml")
 	if err != nil {
 		log.Fatalf("failed to load CIS Fedora policy seed data: %v", err)
 	}
@@ -236,7 +236,7 @@ guidelines:
 			},
 		},
 		{
-			repo: "policies/cis-fedora-l1-workstation",
+			repo: "policies/cis-fedora-l1-server",
 			tags: []string{"v1.0.0", "latest"},
 			layers: []layerDef{
 				{mediaType: gemaraCatalogType, data: cisCatalog},

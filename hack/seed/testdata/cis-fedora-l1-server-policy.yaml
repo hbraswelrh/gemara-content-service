@@ -1,16 +1,16 @@
-title: CIS Fedora Linux - Level 1 Workstation Policy
+title: CIS Fedora Linux - Level 1 Server Policy
 metadata:
-  id: cis-fedora-l1-workstation-policy
-  description: Automated evaluation policy for the CIS Fedora Linux Level 1 Workstation Benchmark
+  id: cis-fedora-l1-server-policy
+  description: Automated evaluation policy for the CIS Fedora Linux Level 1 Server Benchmark
   author:
     id: complytime
     name: ComplyTime
     type: Software-Assisted
   mapping-references:
-    - id: cis-fedora-l1-workstation
-      title: CIS Fedora Linux - Level 1 Workstation
+    - id: cis-fedora-l1-server
+      title: CIS Fedora Linux - Level 1 Server
       version: 1.0.0
-      description: Control catalog for CIS Fedora Linux Level 1 Workstation Benchmark
+      description: Control catalog for CIS Fedora Linux Level 1 Server Benchmark
 contacts:
   responsible:
     - name: System Administrator
@@ -21,10 +21,10 @@ scope:
     technologies:
       - Fedora Linux
     users:
-      - Workstation users
+      - Server administrators
 imports:
   catalogs:
-    - reference-id: cis-fedora-l1-workstation
+    - reference-id: cis-fedora-l1-server
 adherence:
   evaluation-methods:
     - type: automated

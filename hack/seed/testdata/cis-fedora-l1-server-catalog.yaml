@@ -1,7 +1,7 @@
-title: CIS Fedora Linux - Level 1 Workstation
+title: CIS Fedora Linux - Level 1 Server
 metadata:
-  id: cis-fedora-l1-workstation
-  description: Control catalog derived from the CIS Fedora Linux Level 1 Workstation Benchmark
+  id: cis-fedora-l1-server
+  description: Control catalog derived from the CIS Fedora Linux Level 1 Server Benchmark
   author:
     id: complytime
     name: ComplyTime

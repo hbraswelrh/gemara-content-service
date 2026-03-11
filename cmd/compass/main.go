@@ -7,9 +7,11 @@ import (
 	"path/filepath"
 
 	"github.com/goccy/go-yaml"
+	bolt "go.etcd.io/bbolt"
 
 	"github.com/complytime/gemara-content-service/cmd/compass/server"
 	"github.com/complytime/gemara-content-service/internal/logging"
+	"github.com/complytime/gemara-content-service/internal/oci"
 	compass "github.com/complytime/gemara-content-service/service"
 )
 
@@ -17,6 +19,7 @@ func main() {
 
 	var (
 		port, catalogPath, configPath string
+		storageRoot                   string
 		logLevel                      string
 		skipTLS                       bool
 	)
@@ -24,6 +27,7 @@ func main() {
 	flag.StringVar(&port, "port", "8080", "Port for HTTP server")
 	flag.BoolVar(&skipTLS, "skip-tls", false, "Run without TLS")
 	flag.StringVar(&logLevel, "log-level", "info", "Log level: debug|info|warn|error")
+	flag.StringVar(&storageRoot, "storage-root", "", "Path to OCI storage root (contains index.db and blobs/)")
 
 	// TODO: This needs to become Layer 3 policy and complete resolution on startup
 	flag.StringVar(&catalogPath, "catalog", "./hack/sampledata/osps.yaml", "Path to Layer 2 catalog")
@@ -40,6 +44,7 @@ func main() {
 		slog.String("port", port),
 		slog.String("catalog", catalogPath),
 		slog.String("config", configPath),
+		slog.String("storage_root", storageRoot),
 		slog.Bool("skip_tls", skipTLS),
 	)
 
@@ -72,7 +77,25 @@ func main() {
 
 	service := compass.NewService(transformers, scope)
 
-	s := server.NewGinServer(service, port, &cfg)
+	// Initialize the OCI registry if a storage root is configured.
+	var registry *oci.Registry
+	if storageRoot != "" {
+		storageRoot = filepath.Clean(storageRoot)
+		dbPath := filepath.Join(storageRoot, "index.db")
+		blobRoot := filepath.Join(storageRoot, "blobs")
+
+		db, err := bolt.Open(dbPath, 0600, &bolt.Options{ReadOnly: true})
+		if err != nil {
+			slog.Error("failed to open OCI index database", "path", dbPath, "err", err)
+			os.Exit(1)
+		}
+		defer db.Close()
+
+		registry = oci.NewRegistry(db, blobRoot)
+		slog.Info("OCI registry initialized", "storage_root", storageRoot)
+	}
+
+	s := server.NewGinServer(service, registry, port, &cfg)
 
 	if skipTLS {
 		slog.Warn("Insecure connections permitted. TLS is highly recommended for production")

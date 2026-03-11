@@ -54,8 +54,8 @@ type JWTAuthConfig struct {
 }
 
 type CertConfig struct {
-	PublicKey  string `json:"cert" yaml:"cert"`
-	PrivateKey string `json:"key" yaml:"key"`
+	CertPath string `json:"cert" yaml:"cert"`
+	KeyPath  string `json:"key" yaml:"key"`
 }
 
 type PluginConfig struct {

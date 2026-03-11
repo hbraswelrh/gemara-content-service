@@ -1,0 +1,2 @@
+# Distroless images have no shell, so HEALTHCHECK cannot be added
+AVD-DS-0026

@@ -5,7 +5,7 @@
 
 # Stage 1: Certificate extraction
 FROM alpine:3.22 AS certs
-RUN apk --update add ca-certificates
+RUN apk --no-cache add ca-certificates
 
 # Stage 2: Build the service
 FROM golang:1.24.5 AS build-stage
@@ -22,7 +22,7 @@ COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build CGO_ENABLED=0 go build -o compass ./cmd/compass
 
 # Stage 3: Runtime image
-FROM gcr.io/distroless/base:latest
+FROM gcr.io/distroless/base:nonroot
 
 LABEL org.opencontainers.image.title="Gemara Content Service" \
       org.opencontainers.image.description="OCI-compliant registry and enrichment service for Gemara compliance content" \

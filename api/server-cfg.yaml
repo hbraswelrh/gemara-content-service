@@ -3,3 +3,6 @@ generate:
   gin-server: true
   embedded-spec: true
 output: server.gen.go
+output-options:
+  include-tags:
+    - enrichment

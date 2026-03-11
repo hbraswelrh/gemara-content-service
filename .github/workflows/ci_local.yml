@@ -1,5 +1,5 @@
 name: Local CI
-on:
+"on":
   push:
     branches:
       - 'main'

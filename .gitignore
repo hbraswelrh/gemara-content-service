@@ -41,5 +41,8 @@ hack/self-signed-cert/*.srl
 # .vscode/
 *.code-workspace
 
+# MegaLinter local reports
+megalinter-reports/
+
 # Speckit
 .specify/

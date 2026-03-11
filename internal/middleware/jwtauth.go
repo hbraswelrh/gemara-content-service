@@ -51,7 +51,7 @@ func NewJWTAuth(ctx context.Context, config JWTAuthConfig) (*JWTAuth, error) {
 
 	// 3. Apply aggressive DNS bypass
 	if dnsBypassEnabled {
-		slog.Info("DNS bypass enabled - forcing connections to internal Kubernetes API IP", "kubernetes_ip", kubernetesServiceIP)
+		slog.Info("DNS bypass enabled - forcing connections to internal Kubernetes API IP", "kubernetes_ip", kubernetesServiceIP) //nolint:gosec // G706 - structured slog attributes prevent log injection
 
 		k8sConfig.Dial = func(ctx context.Context, network, address string) (net.Conn, error) {
 			forcedAddress := net.JoinHostPort(kubernetesServiceIP, "443")
@@ -113,7 +113,7 @@ func NewJWTAuth(ctx context.Context, config JWTAuthConfig) (*JWTAuth, error) {
 
 	verifier := provider.Verifier(verifierConfig)
 
-	slog.Info("JWT authentication initialized",
+	slog.Info("JWT authentication initialized", //nolint:gosec // G706 - structured slog attributes prevent log injection
 		"issuer", issuerURL,
 		"audience", config.ExpectedAudience,
 		"dns_bypass", dnsBypassEnabled)

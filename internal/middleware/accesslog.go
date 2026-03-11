@@ -22,7 +22,7 @@ func AccessLogger() gin.HandlerFunc {
 			path = path + "?" + rawQuery
 		}
 
-		slog.Info("http_request",
+		slog.Info("http_request", //nolint:gosec // G706 - structured slog attributes prevent log injection
 			slog.String("request_id", rid),
 			slog.String("method", c.Request.Method),
 			slog.String("path", path),

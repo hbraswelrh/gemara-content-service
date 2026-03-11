@@ -10,7 +10,7 @@
 
 name: Publish Images to GHCR
 
-on:
+"on":
   push:
     branches:
       - main
@@ -65,7 +65,7 @@ jobs:
       id-token: write
       actions: read
       attestations: write
-    uses: complytime/org-infra/.github/workflows/reusable_push_ghcr.yml@main
+    uses: complytime/org-infra/.github/workflows/reusable_publish_ghcr.yml@main
     with:
       component_name: compass
       containerfile_path: images/Containerfile.compass

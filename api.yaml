@@ -1,18 +1,177 @@
-# Assisted by: Gemini 2.5 Pro
 openapi: 3.0.3
 info:
-  title: Compass Service API
-  version: 0.1.0
+  title: Gemara Content Service API
   description: |
-    A centralized compliance metadata server that provides policy-to-compliance mappings,
-    control frameworks, and risk assessments for policy-as-code workflows. This service serves as
-    the authoritative source for compliance metadata, enabling OpenTelemetry collectors and other
-    systems to enrich policy evaluation events with standardized compliance context,
-    regulatory mappings, and risk classifications.
+    An OCI-compliant registry and compliance enrichment service for Gemara content.
+    Provides OCI Distribution Spec v2 endpoints for discovering and downloading
+    Gemara compliance YAML (guidance, catalogs, policies) as OCI artifacts, and a
+    compliance enrichment endpoint for OpenTelemetry collector integration.
+  version: 0.1.0
 
 paths:
+  /v2/:
+    get:
+      tags: [oci]
+      summary: OCI API Version Check
+      description: The 'handshake' endpoint to confirm OCI compliance.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Docker-Distribution-API-Version:
+              schema:
+                type: string
+                example: "registry/2.0"
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+
+  /v2/_catalog:
+    get:
+      tags: [oci]
+      summary: List all repositories
+      responses:
+        '200':
+          description: A list of all policy, catalog, and guidance IDs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  repositories:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  repositories: ["policies/rhel11", "catalogs/pci-dss", "guidance/nist"]
+
+  /v2/{name}/tags/list:
+    get:
+      tags: [oci]
+      summary: List all tags for a specific repository
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            The full repository path (e.g., policies/rhel11-stig). May contain
+            slashes; the router must use a catch-all parameter to capture the
+            full path (OpenAPI 3.0 path parameters do not natively support
+            slashes).
+      responses:
+        '200':
+          description: A list of version tags.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  name: "policies/rhel11-stig"
+                  tags: ["v1.0.0", "v1.1.0", "latest"]
+        '404':
+          description: Repository not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCIErrors'
+
+  /v2/{name}/manifests/{reference}:
+    get:
+      tags: [oci]
+      summary: Get artifact manifest
+      description: |
+        Returns the OCI manifest for the given reference. The reference can be
+        a tag (e.g. v1.0.0) or a digest (e.g. sha256:abc123...). The manifest
+        describes layers containing Gemara compliance content.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            The full repository path (e.g., policies/rhel11). May contain
+            slashes; the router must use a catch-all parameter to capture the
+            full path (OpenAPI 3.0 path parameters do not natively support
+            slashes).
+        - name: reference
+          in: path
+          required: true
+          schema:
+            type: string
+          description: A tag (e.g. v1.0.0) or a digest (e.g. sha256:...).
+      responses:
+        '200':
+          description: The OCI image manifest for the requested artifact.
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: "application/vnd.oci.image.manifest.v1+json"
+          content:
+            application/vnd.oci.image.manifest.v1+json:
+              schema:
+                $ref: '#/components/schemas/OCIManifest'
+        '404':
+          description: Manifest or repository not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCIErrors'
+
+  /v2/{name}/blobs/{digest}:
+    get:
+      tags: [oci]
+      summary: Get a content-addressable blob
+      description: |
+        Streams the raw blob content (e.g. a Gemara YAML file) identified by
+        its sha256 digest.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            The full repository path (e.g., catalogs/osps-b). May contain
+            slashes; the router must use a catch-all parameter to capture the
+            full path (OpenAPI 3.0 path parameters do not natively support
+            slashes).
+        - name: digest
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The blob digest (e.g. sha256:abc123...).
+      responses:
+        '200':
+          description: The raw blob content.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Blob not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCIErrors'
+
   /v1/enrich:
     post:
+      tags: [enrichment]
       summary: Enrich telemetry attributes with compliance control data
       description: |
         Accepts a set of key telemetry attributes (e.g., asset ID, policy name, user ID) and
@@ -32,7 +191,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/EnrichmentResponse'
         default:
-          description: unexpected error
+          description: Unexpected error
           content:
             application/json:
               schema:
@@ -51,7 +210,7 @@ components:
 
     EnrichmentResponse:
       type: object
-      description: "Complete compliance metadata including control mappings, frameworks, risk assessment."
+      description: Complete compliance metadata including control mappings, frameworks, risk assessment.
       properties:
         compliance:
           $ref: '#/components/schemas/Compliance'
@@ -74,7 +233,7 @@ components:
 
     Policy:
       type: object
-      description: "Complete evidence log from policy engines and compliance assessment tools"
+      description: Complete evidence log from policy engines and compliance assessment tools
       properties:
         policyEngineName:
           type: string
@@ -90,8 +249,7 @@ components:
 
     Compliance:
       type: object
-      title: "Compliance"
-      description: "Compliance details from OCSF Security Control Profile."
+      description: Compliance details from OCSF Security Control Profile.
       properties:
         control:
           $ref: '#/components/schemas/ComplianceControl'
@@ -101,19 +259,17 @@ components:
           $ref: '#/components/schemas/ComplianceRisk'
         enrichmentStatus:
           type: string
-          description: "Status of the compliance enrichment process: Success, Unmapped, Partial, Unknown, or Skipped."
+          description: Status of the compliance enrichment process
           enum: ["Success", "Unmapped", "Partial", "Unknown", "Skipped"]
           example: "Success"
-      additionalProperties: false
       required:
         - control
         - frameworks
         - enrichmentStatus
 
-    # Compliance Control Schema
     ComplianceControl:
       type: object
-      description: "Security control information for compliance assessment"
+      description: Security control information for compliance assessment
       properties:
         id:
           type: string
@@ -142,10 +298,9 @@ components:
         - catalogId
         - category
 
-    # Compliance Frameworks Schema
     ComplianceFrameworks:
       type: object
-      description: "Compliance framework and requirement information"
+      description: Compliance framework and requirement information
       properties:
         frameworks:
           type: array
@@ -163,10 +318,9 @@ components:
         - frameworks
         - requirements
 
-    # Compliance Risk Schema
     ComplianceRisk:
       type: object
-      description: "Compliance risk assessment information"
+      description: Compliance risk assessment information
       properties:
         level:
           type: string
@@ -175,6 +329,137 @@ components:
           example: "High"
       required:
         - level
+
+    # --- OCI Registry Schemas ---
+
+    OCIManifest:
+      type: object
+      description: An OCI image manifest describing layers of Gemara compliance content.
+      properties:
+        schemaVersion:
+          type: integer
+          description: Must be 2 for OCI image manifests.
+          example: 2
+        mediaType:
+          type: string
+          description: The manifest media type.
+          example: "application/vnd.oci.image.manifest.v1+json"
+        config:
+          $ref: '#/components/schemas/OCIDescriptor'
+        layers:
+          type: array
+          description: Ordered list of layer descriptors. Each layer contains one Gemara YAML file.
+          items:
+            $ref: '#/components/schemas/OCILayerDescriptor'
+      required:
+        - schemaVersion
+        - mediaType
+        - config
+        - layers
+      example:
+        schemaVersion: 2
+        mediaType: "application/vnd.oci.image.manifest.v1+json"
+        config:
+          mediaType: "application/vnd.oci.empty.v1+json"
+          digest: "sha256:44136fa355b311bfa706..."
+          size: 2
+        layers:
+          - mediaType: "application/vnd.gemara.catalog.v1+yaml"
+            digest: "sha256:e3b0c44298fc1c149af..."
+            size: 4096
+
+    OCIDescriptor:
+      type: object
+      description: An OCI content descriptor (used for config blobs).
+      properties:
+        mediaType:
+          type: string
+          description: Media type of the referenced content.
+          example: "application/vnd.oci.empty.v1+json"
+        digest:
+          type: string
+          description: Content-addressable digest (e.g. sha256:...).
+          example: "sha256:44136fa355b311bfa706..."
+        size:
+          type: integer
+          format: int64
+          description: Size of the content in bytes.
+          example: 2
+      required:
+        - mediaType
+        - digest
+        - size
+
+    OCILayerDescriptor:
+      type: object
+      description: |
+        An OCI layer descriptor for Gemara content. The mediaType field
+        identifies the Gemara layer type of the referenced YAML file.
+      properties:
+        mediaType:
+          type: string
+          description: |
+            The Gemara content type of this layer. Identifies which Gemara
+            layer the YAML content belongs to.
+          enum:
+            - "application/vnd.gemara.guidance.v1+yaml"
+            - "application/vnd.gemara.catalog.v1+yaml"
+            - "application/vnd.gemara.policy.v1+yaml"
+          example: "application/vnd.gemara.catalog.v1+yaml"
+        digest:
+          type: string
+          description: Content-addressable digest (e.g. sha256:...).
+          example: "sha256:e3b0c44298fc1c149af..."
+        size:
+          type: integer
+          format: int64
+          description: Size of the content in bytes.
+          example: 4096
+      required:
+        - mediaType
+        - digest
+        - size
+
+    OCIErrors:
+      type: object
+      description: OCI Distribution Spec error response.
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/OCIError'
+      required:
+        - errors
+      example:
+        errors:
+          - code: "MANIFEST_UNKNOWN"
+            message: "manifest unknown"
+
+    OCIError:
+      type: object
+      description: A single OCI error entry.
+      properties:
+        code:
+          type: string
+          description: |
+            OCI error code. One of: NAME_UNKNOWN, MANIFEST_UNKNOWN,
+            BLOB_UNKNOWN.
+          enum:
+            - "NAME_UNKNOWN"
+            - "MANIFEST_UNKNOWN"
+            - "BLOB_UNKNOWN"
+          example: "MANIFEST_UNKNOWN"
+        message:
+          type: string
+          description: Human-readable error message.
+          example: "manifest unknown"
+        detail:
+          description: Optional additional error context.
+      required:
+        - code
+        - message
+
+    # --- Enrichment Schemas ---
 
     Error:
       type: object

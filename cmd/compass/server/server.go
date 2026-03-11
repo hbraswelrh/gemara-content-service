@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"crypto/tls"
 	"log/slog"
 	"net"
@@ -17,7 +18,7 @@ import (
 	compass "github.com/complytime/gemara-content-service/service"
 )
 
-func NewGinServer(service *compass.Service, port string) *http.Server {
+func NewGinServer(service *compass.Service, port string, config *Config) *http.Server {
 	swagger, err := api.GetSwagger()
 	if err != nil {
 		slog.Error("Error loading swagger spec", "err", err)
@@ -31,6 +32,32 @@ func NewGinServer(service *compass.Service, port string) *http.Server {
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.Use(requestid.New(), httpmw.AccessLogger())
+
+	// Add JWT authentication middleware if enabled
+	if config.JWTAuth.Enabled {
+		// Allow overriding expected audience from environment variable
+		expectedAudience := config.JWTAuth.ExpectedAudience
+		if envAudience := os.Getenv("EXPECTED_AUDIENCE"); envAudience != "" {
+			expectedAudience = envAudience
+			slog.Info("using expected audience from environment", "audience", expectedAudience)
+		}
+
+		jwtConfig := httpmw.JWTAuthConfig{
+			IssuerURL:           config.JWTAuth.IssuerURL,
+			KubernetesServiceIP: config.JWTAuth.KubernetesServiceIP,
+			ExpectedAudience:    expectedAudience,
+			AllowedSubjects:     config.JWTAuth.AllowedSubjects,
+		}
+
+		jwtAuth, err := httpmw.NewJWTAuth(context.Background(), jwtConfig)
+		if err != nil {
+			slog.Error("failed to initialize JWT authentication", "error", err)
+			os.Exit(1)
+		}
+
+		r.Use(jwtAuth.Middleware())
+		slog.Info("jwt authentication enabled", "audience", expectedAudience)
+	}
 
 	r.Use(middleware.OapiRequestValidator(swagger))
 

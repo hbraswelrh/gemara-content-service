@@ -31,7 +31,7 @@ func main() {
 
 	// TODO: This needs to become Layer 3 policy and complete resolution on startup
 	flag.StringVar(&catalogPath, "catalog", "./hack/sampledata/osps.yaml", "Path to Layer 2 catalog")
-	flag.StringVar(&configPath, "config", "./docs/config.yaml", "Path to compass config file")
+	flag.StringVar(&configPath, "config", "./hack/demo/config.yaml", "Path to compass config file")
 	flag.Parse()
 
 	_, err := logging.Init(logLevel)

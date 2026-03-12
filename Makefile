@@ -12,8 +12,6 @@
 
 BIN_DIR := bin
 BINARY := compass
-CERT_DIR := hack/self-signed-cert
-OPENSSL_CNF := $(CERT_DIR)/openssl.cnf
 
 all: test build
 
@@ -65,26 +63,6 @@ deps: ## Tidy, verify, and download dependencies
 api-codegen: ## Runs go generate for OpenAPI code generation
 	go generate ./...
 .PHONY: api-codegen
-
-# ------------------------------------------------------------------------------
-# Certificates
-# ------------------------------------------------------------------------------
-generate-self-signed-cert: ## Generate self-signed certificates for local development
-	@find $(CERT_DIR) -mindepth 1 ! -name 'openssl.cnf' -delete
-	@echo "--- Generating self-signed certificates in $(CERT_DIR) ---"
-	@openssl genrsa -out $(CERT_DIR)/ca.key 2048
-	@openssl req -x509 -new -nodes -key $(CERT_DIR)/ca.key -sha256 -days 365 \
-		-subj "/CN=Gemara Content Service CA" \
-		-extensions v3_ca -config $(OPENSSL_CNF) \
-		-out $(CERT_DIR)/ca.crt
-	@openssl genrsa -out $(CERT_DIR)/compass.key 2048
-	@chmod a+r $(CERT_DIR)/compass.key
-	@openssl req -new -key $(CERT_DIR)/compass.key -out $(CERT_DIR)/compass.csr -config $(OPENSSL_CNF)
-	@openssl x509 -req -in $(CERT_DIR)/compass.csr -CA $(CERT_DIR)/ca.crt -CAkey $(CERT_DIR)/ca.key -CAcreateserial \
-		-out $(CERT_DIR)/compass.crt -days 365 -sha256 \
-		-extfile $(OPENSSL_CNF) -extensions v3_req
-	@echo "--- Certificates generated successfully ---"
-.PHONY: generate-self-signed-cert
 
 # ------------------------------------------------------------------------------
 # Linting

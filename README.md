@@ -9,7 +9,7 @@ An OCI-compliant content delivery and enrichment service for [Gemara](https://gi
 - **Content-addressable storage** -- Blobs stored on filesystem by SHA-256 digest, metadata indexed in embedded BBolt
 
 ⚠️ **NOTE:**
-To disable JWT when you build the tool for local running, ensure `jwtAuth` is set to `false` in [docs/config.yaml](docs/config.yaml).
+To disable JWT when you build the tool for local running, ensure `jwtAuth` is set to `false` in [config.yaml](hack/demo/config.yaml).
 
 ## Quick Start
 
@@ -25,18 +25,22 @@ make build
 ./bin/compass --skip-tls --port 9090
 ```
 
+### Build container image locally
+
+```shell
+podman build -f images/Containerfile.compass -t gemara-content-service:local .
+```
+
+
 ### Run tests
 
 ```bash
 make test
 ```
 
-### Generate self-signed certificates
+### Generate self-signed certificates for testing
 
-```bash
-make generate-self-signed-cert
-./bin/compass --port 8443
-```
+Refer to [this](https://github.com/complytime/complytime-collector-components/blob/main/Makefile#L124) 
 
 ## Project Structure
 
@@ -61,15 +65,14 @@ docs/                 Configuration files
 
 ### Useful Make targets
 
-| Target | Description |
-|--------|-------------|
-| `make build` | Build the binary |
-| `make test` | Run tests with coverage |
-| `make test-race` | Run tests with race detection |
-| `make golangci-lint` | Run linter |
-| `make api-codegen` | Regenerate OpenAPI types and server |
-| `make generate-self-signed-cert` | Generate TLS certs for local dev |
-| `make help` | Show all targets |
+| Target               | Description                         |
+|----------------------|-------------------------------------|
+| `make build`         | Build the binary                    |
+| `make test`          | Run tests with coverage             |
+| `make test-race`     | Run tests with race detection       |
+| `make golangci-lint` | Run linter                          |
+| `make api-codegen`   | Regenerate OpenAPI types and server |
+| `make help`          | Show all targets                    |
 
 ## License
 

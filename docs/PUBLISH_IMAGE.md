@@ -1,0 +1,1 @@
+Refer to [publish_image.md](https://github.com/complytime/complytime-collector-components/blob/main/docs/publish_image/publish_image.md)

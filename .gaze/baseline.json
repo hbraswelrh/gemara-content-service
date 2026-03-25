@@ -1,0 +1,605 @@
+{
+  "scores": [
+    {
+      "package": "main",
+      "function": "main",
+      "file": "cmd/compass/main.go",
+      "line": 18,
+      "complexity": 11,
+      "line_coverage": 0,
+      "crap": 132
+    },
+    {
+      "package": "server",
+      "function": "NewScopeFromCatalogPath",
+      "file": "cmd/compass/server/config.go",
+      "line": 18,
+      "complexity": 3,
+      "line_coverage": 0,
+      "crap": 12
+    },
+    {
+      "package": "server",
+      "function": "NewMapperSet",
+      "file": "cmd/compass/server/config.go",
+      "line": 66,
+      "complexity": 7,
+      "line_coverage": 0,
+      "crap": 56
+    },
+    {
+      "package": "server",
+      "function": "NewMapperFromDir",
+      "file": "cmd/compass/server/config.go",
+      "line": 101,
+      "complexity": 8,
+      "line_coverage": 0,
+      "crap": 72
+    },
+    {
+      "package": "server",
+      "function": "NewGinServer",
+      "file": "cmd/compass/server/server.go",
+      "line": 22,
+      "complexity": 6,
+      "line_coverage": 0,
+      "crap": 42
+    },
+    {
+      "package": "server",
+      "function": "SetupTLS",
+      "file": "cmd/compass/server/server.go",
+      "line": 84,
+      "complexity": 3,
+      "line_coverage": 0,
+      "crap": 12
+    },
+    {
+      "package": "main",
+      "function": "main",
+      "file": "hack/seed/main.go",
+      "line": 56,
+      "complexity": 16,
+      "line_coverage": 0,
+      "crap": 272
+    },
+    {
+      "package": "main",
+      "function": "digestOf",
+      "file": "hack/seed/main.go",
+      "line": 332,
+      "complexity": 1,
+      "line_coverage": 0,
+      "crap": 2
+    },
+    {
+      "package": "main",
+      "function": "writeBlob",
+      "file": "hack/seed/main.go",
+      "line": 337,
+      "complexity": 2,
+      "line_coverage": 0,
+      "crap": 6
+    },
+    {
+      "package": "logging",
+      "function": "Init",
+      "file": "internal/logging/logging.go",
+      "line": 13,
+      "complexity": 2,
+      "line_coverage": 0,
+      "crap": 6
+    },
+    {
+      "package": "logging",
+      "function": "parseLevel",
+      "file": "internal/logging/logging.go",
+      "line": 26,
+      "complexity": 5,
+      "line_coverage": 0,
+      "crap": 30
+    },
+    {
+      "package": "middleware",
+      "function": "AccessLogger",
+      "file": "internal/middleware/accesslog.go",
+      "line": 12,
+      "complexity": 2,
+      "line_coverage": 90,
+      "crap": 2.004,
+      "contract_coverage": 0,
+      "gaze_crap": 6,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "middleware",
+      "function": "NewJWTAuth",
+      "file": "internal/middleware/jwtauth.go",
+      "line": 35,
+      "complexity": 11,
+      "line_coverage": 57.142857142857146,
+      "crap": 20.524781341107868,
+      "contract_coverage": 50,
+      "gaze_crap": 26.125,
+      "quadrant": "Q4_Dangerous"
+    },
+    {
+      "package": "middleware",
+      "function": "(*JWTAuth).Middleware",
+      "file": "internal/middleware/jwtauth.go",
+      "line": 129,
+      "complexity": 9,
+      "line_coverage": 28.125,
+      "crap": 39.075897216796875,
+      "contract_coverage": 100,
+      "gaze_crap": 9,
+      "quadrant": "Q2_ComplexButTested"
+    },
+    {
+      "package": "middleware",
+      "function": "JWTAuthMiddleware",
+      "file": "internal/middleware/jwtauth.go",
+      "line": 189,
+      "complexity": 2,
+      "line_coverage": 66.66666666666667,
+      "crap": 2.148148148148148,
+      "contract_coverage": 0,
+      "gaze_crap": 6,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "middleware",
+      "function": "validateSubject",
+      "file": "internal/middleware/jwtauth.go",
+      "line": 202,
+      "complexity": 3,
+      "line_coverage": 100,
+      "crap": 3
+    },
+    {
+      "package": "oci",
+      "function": "writeOCIError",
+      "file": "internal/oci/errors.go",
+      "line": 30,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1
+    },
+    {
+      "package": "oci",
+      "function": "writeNameUnknown",
+      "file": "internal/oci/errors.go",
+      "line": 39,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1
+    },
+    {
+      "package": "oci",
+      "function": "writeManifestUnknown",
+      "file": "internal/oci/errors.go",
+      "line": 44,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1
+    },
+    {
+      "package": "oci",
+      "function": "writeBlobUnknown",
+      "file": "internal/oci/errors.go",
+      "line": 49,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1
+    },
+    {
+      "package": "oci",
+      "function": "NewHandler",
+      "file": "internal/oci/handler.go",
+      "line": 18,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "oci",
+      "function": "(*Handler).V2Check",
+      "file": "internal/oci/handler.go",
+      "line": 23,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1
+    },
+    {
+      "package": "oci",
+      "function": "(*Handler).ListCatalog",
+      "file": "internal/oci/handler.go",
+      "line": 29,
+      "complexity": 2,
+      "line_coverage": 60,
+      "crap": 2.2560000000000002
+    },
+    {
+      "package": "oci",
+      "function": "(*Handler).ListTags",
+      "file": "internal/oci/handler.go",
+      "line": 39,
+      "complexity": 3,
+      "line_coverage": 75,
+      "crap": 3.140625
+    },
+    {
+      "package": "oci",
+      "function": "(*Handler).GetManifest",
+      "file": "internal/oci/handler.go",
+      "line": 57,
+      "complexity": 4,
+      "line_coverage": 86.66666666666667,
+      "crap": 4.037925925925926
+    },
+    {
+      "package": "oci",
+      "function": "(*Handler).GetBlob",
+      "file": "internal/oci/handler.go",
+      "line": 80,
+      "complexity": 3,
+      "line_coverage": 80,
+      "crap": 3.072
+    },
+    {
+      "package": "oci",
+      "function": "NewRegistry",
+      "file": "internal/oci/registry.go",
+      "line": 36,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "oci",
+      "function": "(*Registry).ListRepositories",
+      "file": "internal/oci/registry.go",
+      "line": 45,
+      "complexity": 6,
+      "line_coverage": 90.47619047619048,
+      "crap": 6.031098153547133,
+      "contract_coverage": 0,
+      "gaze_crap": 42,
+      "quadrant": "Q3_SimpleButUnderspecified"
+    },
+    {
+      "package": "oci",
+      "function": "(*Registry).ListTags",
+      "file": "internal/oci/registry.go",
+      "line": 83,
+      "complexity": 6,
+      "line_coverage": 93.75,
+      "crap": 6.0087890625,
+      "contract_coverage": 0,
+      "gaze_crap": 42,
+      "quadrant": "Q3_SimpleButUnderspecified"
+    },
+    {
+      "package": "oci",
+      "function": "(*Registry).GetManifest",
+      "file": "internal/oci/registry.go",
+      "line": 114,
+      "complexity": 8,
+      "line_coverage": 92.5925925925926,
+      "crap": 8.026012294873748,
+      "contract_coverage": 100,
+      "gaze_crap": 8,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "oci",
+      "function": "(*Registry).BlobPath",
+      "file": "internal/oci/registry.go",
+      "line": 164,
+      "complexity": 4,
+      "line_coverage": 90,
+      "crap": 4.016,
+      "contract_coverage": 0,
+      "gaze_crap": 20,
+      "quadrant": "Q3_SimpleButUnderspecified"
+    },
+    {
+      "package": "oci",
+      "function": "parseDigest",
+      "file": "internal/oci/registry.go",
+      "line": 187,
+      "complexity": 5,
+      "line_coverage": 100,
+      "crap": 5
+    },
+    {
+      "package": "oci",
+      "function": "RegisterRoutes",
+      "file": "internal/oci/routes.go",
+      "line": 13,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "oci",
+      "function": "dispatch",
+      "file": "internal/oci/routes.go",
+      "line": 29,
+      "complexity": 12,
+      "line_coverage": 81.81818181818181,
+      "crap": 12.865514650638618
+    },
+    {
+      "package": "factory",
+      "function": "MapperByID",
+      "file": "mapper/factory/factory.go",
+      "line": 8,
+      "complexity": 1,
+      "line_coverage": 0,
+      "crap": 2
+    },
+    {
+      "package": "mapper",
+      "function": "NewID",
+      "file": "mapper/mapper.go",
+      "line": 22,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 100,
+      "gaze_crap": 1,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).AddEvaluationPlan",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 38,
+      "complexity": 2,
+      "line_coverage": 100,
+      "crap": 2,
+      "contract_coverage": 0,
+      "gaze_crap": 6,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "basic",
+      "function": "NewBasicMapper",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 48,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).PluginName",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 54,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).Map",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 59,
+      "complexity": 6,
+      "line_coverage": 75,
+      "crap": 6.5625,
+      "contract_coverage": 100,
+      "gaze_crap": 6,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).buildProceduresMap",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 141,
+      "complexity": 4,
+      "line_coverage": 100,
+      "crap": 4
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).buildControlDataMap",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 160,
+      "complexity": 3,
+      "line_coverage": 100,
+      "crap": 3
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).extractRequirements",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 176,
+      "complexity": 3,
+      "line_coverage": 100,
+      "crap": 3
+    },
+    {
+      "package": "basic",
+      "function": "(*Mapper).extractStandards",
+      "file": "mapper/plugins/basic/basic.go",
+      "line": 187,
+      "complexity": 2,
+      "line_coverage": 100,
+      "crap": 2
+    },
+    {
+      "package": "service",
+      "function": "NewService",
+      "file": "service/service.go",
+      "line": 22,
+      "complexity": 1,
+      "line_coverage": 100,
+      "crap": 1,
+      "contract_coverage": 0,
+      "gaze_crap": 2,
+      "quadrant": "Q1_Safe"
+    },
+    {
+      "package": "service",
+      "function": "(*Service).PostV1Enrich",
+      "file": "service/service.go",
+      "line": 31,
+      "complexity": 3,
+      "line_coverage": 0,
+      "crap": 12
+    },
+    {
+      "package": "service",
+      "function": "sendCompassError",
+      "file": "service/service.go",
+      "line": 82,
+      "complexity": 1,
+      "line_coverage": 0,
+      "crap": 2
+    }
+  ],
+  "summary": {
+    "total_functions": 47,
+    "avg_complexity": 3.851063829787234,
+    "avg_line_coverage": 63.13272670985438,
+    "avg_crap": 17.271687059436985,
+    "crapload": 8,
+    "crap_threshold": 15,
+    "gaze_crapload": 4,
+    "gaze_crap_threshold": 15,
+    "avg_gaze_crap": 10.830882352941176,
+    "avg_contract_coverage": 26.470588235294116,
+    "quadrant_counts": {
+      "Q1_Safe": 12,
+      "Q2_ComplexButTested": 1,
+      "Q3_SimpleButUnderspecified": 3,
+      "Q4_Dangerous": 1
+    },
+    "worst_crap": [
+      {
+        "package": "main",
+        "function": "main",
+        "file": "hack/seed/main.go",
+        "line": 56,
+        "complexity": 16,
+        "line_coverage": 0,
+        "crap": 272
+      },
+      {
+        "package": "main",
+        "function": "main",
+        "file": "cmd/compass/main.go",
+        "line": 18,
+        "complexity": 11,
+        "line_coverage": 0,
+        "crap": 132
+      },
+      {
+        "package": "server",
+        "function": "NewMapperFromDir",
+        "file": "cmd/compass/server/config.go",
+        "line": 101,
+        "complexity": 8,
+        "line_coverage": 0,
+        "crap": 72
+      },
+      {
+        "package": "server",
+        "function": "NewMapperSet",
+        "file": "cmd/compass/server/config.go",
+        "line": 66,
+        "complexity": 7,
+        "line_coverage": 0,
+        "crap": 56
+      },
+      {
+        "package": "server",
+        "function": "NewGinServer",
+        "file": "cmd/compass/server/server.go",
+        "line": 22,
+        "complexity": 6,
+        "line_coverage": 0,
+        "crap": 42
+      }
+    ],
+    "worst_gaze_crap": [
+      {
+        "package": "oci",
+        "function": "(*Registry).ListRepositories",
+        "file": "internal/oci/registry.go",
+        "line": 45,
+        "complexity": 6,
+        "line_coverage": 90.47619047619048,
+        "crap": 6.031098153547133,
+        "contract_coverage": 0,
+        "gaze_crap": 42,
+        "quadrant": "Q3_SimpleButUnderspecified"
+      },
+      {
+        "package": "oci",
+        "function": "(*Registry).ListTags",
+        "file": "internal/oci/registry.go",
+        "line": 83,
+        "complexity": 6,
+        "line_coverage": 93.75,
+        "crap": 6.0087890625,
+        "contract_coverage": 0,
+        "gaze_crap": 42,
+        "quadrant": "Q3_SimpleButUnderspecified"
+      },
+      {
+        "package": "middleware",
+        "function": "NewJWTAuth",
+        "file": "internal/middleware/jwtauth.go",
+        "line": 35,
+        "complexity": 11,
+        "line_coverage": 57.142857142857146,
+        "crap": 20.524781341107868,
+        "contract_coverage": 50,
+        "gaze_crap": 26.125,
+        "quadrant": "Q4_Dangerous"
+      },
+      {
+        "package": "oci",
+        "function": "(*Registry).BlobPath",
+        "file": "internal/oci/registry.go",
+        "line": 164,
+        "complexity": 4,
+        "line_coverage": 90,
+        "crap": 4.016,
+        "contract_coverage": 0,
+        "gaze_crap": 20,
+        "quadrant": "Q3_SimpleButUnderspecified"
+      },
+      {
+        "package": "middleware",
+        "function": "(*JWTAuth).Middleware",
+        "file": "internal/middleware/jwtauth.go",
+        "line": 129,
+        "complexity": 9,
+        "line_coverage": 28.125,
+        "crap": 39.075897216796875,
+        "contract_coverage": 100,
+        "gaze_crap": 9,
+        "quadrant": "Q2_ComplexButTested"
+      }
+    ]
+  }
+}
